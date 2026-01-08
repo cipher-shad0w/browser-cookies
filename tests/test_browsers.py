@@ -13,17 +13,16 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.core.utils import ChromeType
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from webdriver_manager.opera import OperaDriverManager
 
-from browser_cookie3 import (brave, chrome, chromium, edge, firefox, librewolf,
-                             load, opera, opera_gx, vivaldi)
+from src import (brave, chrome, chromium, comet, edge, firefox, librewolf,
+                 load, opera, opera_gx, vivaldi)
 
 from .utils import BrowserName, logger
 from .utils.browser_paths import BinaryLocation
-from .utils.driver_version import get_vivaldi_driver_version
+from .utils.driver_version import get_vivaldi_driver_version, get_comet_driver_version
 
 FIREFOX_BASED_PROFILE_DIR_TAR_XZ_B64 = '/Td6WFoAAATm1rRGAgAhARYAAAB0L+Wj4Cf/AYFdABoeCqdqx8Ww3rP7opUNoguNkPsxJ2/LebvQiBz6BsBQHaW+I1WQtjmf3unq5qmmUUrSZDK1J4u30H9wRGMKCVjK3Fc4k2kZ6V9v2ySBjXGozKv3Fk/Ai8MCLrCO+SZEQvWOKlVVCBs798tiUloPgnBdT3fRm60SZOSq9gz0ac+/B5M3kI2E9sc6zTn1BVUGf3XpssfNTbyq3Htm/XyjGXwsjpxHjVVfoijHC5ldnaE09Ro14TLFRs56FUolOssUzvXnWt0VrFd3dD/oZxVJ7XDS/1lirTYUWMkiPu4lU6icGJWzIVIEh5MA/cBoO7LDHd6ehXlyhbOGPeNpVuk7a0GGOq295Zi/4jFT2JeIm9QOtw/pcRFsP/sn6Y1MS2BBiO9A30qT0zyb+mqho8kxvK2gMnZWJSFczG/9lyWyNc8gDtpYYyGBjfinCYdJlcOAMoa5pS3zS5g4AIvCSKVwEH1Ba3gn1StsUCGMT4Nw9Pom/Wkd3JGSfq30VB+bRRNlch0AAAAA7jsEu81WUn0AAZ0DgFAAABsz6KSxxGf7AgAAAAAEWVo='   # noqa: E501
 FIREFOX_BASED_PROFILE_DIR_NAME = '4xutesqi.default-release'
@@ -46,7 +45,7 @@ class Test(unittest.TestCase):
             raise_not_found=cls.__is_github_actions)
 
     def setUp(self) -> None:
-        self.__temp_dir = tempfile.mktemp(prefix='browser_cookie3_test_')
+        self.__temp_dir = tempfile.mktemp(prefix='browser_cookie_test_')
         os.mkdir(self.__temp_dir)
         logger.info('Starting test: %s', self._testMethodName)
         super().setUp()
@@ -140,7 +139,7 @@ class Test(unittest.TestCase):
             logger.warning(
                 'Cookie database was empty after waiting for cookies to be detected')
 
-    def __setup_chromium_based(self, chrome_type, binary_location, driver_version=None):
+    def __setup_chromium_based(self, chrome_type_str, binary_location, driver_version=None):
         options = webdriver.ChromeOptions()
         options.binary_location = binary_location
         options.add_argument(f'--user-data-dir={self.__get_data_dir()}')
@@ -148,7 +147,7 @@ class Test(unittest.TestCase):
             options.add_argument('--headless=new')
             options.add_argument('--disable-gpu')
         self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager(
-            version=driver_version, chrome_type=chrome_type).install()), options=options)
+            driver_version=driver_version, chrome_type=chrome_type_str).install()), options=options)
 
     def __test_chromium_based(self, browser_func, max_wait_seconds=45):
         paths = ['Default', 'Cookies']
@@ -163,7 +162,7 @@ class Test(unittest.TestCase):
 
     def __setup_opera_based(self, binary_location):
         if sys.platform != 'win32':
-            return self.__setup_chromium_based(ChromeType.GOOGLE, binary_location)
+            return self.__setup_chromium_based('google-chrome', binary_location)
         self.__opera_service = ChromeService(OperaDriverManager().install())
         self.__opera_service.start()
         options = webdriver.ChromeOptions()
@@ -217,17 +216,17 @@ class Test(unittest.TestCase):
 
     def test_brave(self):
         self.__setup_chromium_based(
-            ChromeType.BRAVE, self.__binary_location.get(BrowserName.BRAVE))
+            'brave', self.__binary_location.get(BrowserName.BRAVE))
         self.__test_chromium_based(brave)
 
     def test_chromium(self):
         self.__setup_chromium_based(
-            ChromeType.CHROMIUM, self.__binary_location.get(BrowserName.CHROMIUM))
+            'chromium', self.__binary_location.get(BrowserName.CHROMIUM))
         self.__test_chromium_based(chromium)
 
     def test_chrome(self):
         self.__setup_chromium_based(
-            ChromeType.GOOGLE, self.__binary_location.get(BrowserName.CHROME))
+            'google-chrome', self.__binary_location.get(BrowserName.CHROME))
         self.__test_chromium_based(chrome)
 
     def test_firefox(self):
@@ -264,9 +263,17 @@ class Test(unittest.TestCase):
         driver_version = get_vivaldi_driver_version(
             self.__binary_location.get(BrowserName.VIVALDI), self.__is_github_actions)
         logger.info(f'Using chromedriver version {driver_version} for Vivaldi')
-        self.__setup_chromium_based(ChromeType.GOOGLE, self.__binary_location.get(
+        self.__setup_chromium_based('google-chrome', self.__binary_location.get(
             BrowserName.VIVALDI), driver_version)
         self.__test_chromium_based(vivaldi)
+
+    def test_comet(self):
+        # Comet requires a specific version of chromedriver
+        binary_location = self.__binary_location.get(BrowserName.COMET)
+        driver_version = get_comet_driver_version(binary_location)
+        logger.info(f'Using chromedriver version {driver_version} for Comet')
+        self.__setup_chromium_based('google-chrome', binary_location, driver_version)
+        self.__test_chromium_based(comet)
 
     def test_z_load(self):
         logger.info('Testing load() at the end of the test suite')

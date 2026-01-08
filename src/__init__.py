@@ -923,6 +923,39 @@ class Vivaldi(ChromiumBased):
                          domain_name=domain_name, key_file=key_file, **args)
 
 
+class Comet(ChromiumBased):
+    """Class for Comet Browser"""
+
+    def __init__(self, cookie_file=None, domain_name="", key_file=None):
+        args = {
+            'windows_cookies': _genarate_win_paths_chromium(
+                [
+                    'Comet{channel}\\User Data\\Default\\Cookies',
+                    'Comet{channel}\\User Data\\Default\\Network\\Cookies',
+                    'Comet{channel}\\User Data\\Profile *\\Cookies',
+                    'Comet{channel}\\User Data\\Profile *\\Network\\Cookies'
+                ],
+                channel=['']
+            ),
+            'osx_cookies': _genarate_nix_paths_chromium(
+                [
+                    '~/Library/Application Support/Comet{channel}/Default/Cookies',
+                    '~/Library/Application Support/Comet{channel}/Profile */Cookies'
+                ],
+                channel=['']
+            ),
+            'windows_keys': _genarate_win_paths_chromium(
+                'Comet{channel}\\User Data\\Local State',
+                channel=['']
+            ),
+            'os_crypt_name': 'chrome',
+            'osx_key_service': 'Comet Safe Storage',
+            'osx_key_user': 'Comet'
+        }
+        super().__init__(browser='Comet', cookie_file=cookie_file,
+                         domain_name=domain_name, key_file=key_file, **args)
+
+
 class FirefoxBased:
     """Superclass for Firefox based browsers"""
 
@@ -1369,6 +1402,13 @@ def vivaldi(cookie_file=None, domain_name="", key_file=None):
     return Vivaldi(cookie_file, domain_name, key_file).load()
 
 
+def comet(cookie_file=None, domain_name="", key_file=None):
+    """Returns a cookiejar of the cookies used by Comet. Optionally pass in a
+    domain name to only load cookies from the specified domain
+    """
+    return Comet(cookie_file, domain_name, key_file).load()
+
+
 def firefox(cookie_file=None, domain_name="", key_file=None):
     """Returns a cookiejar of the cookies and sessions used by Firefox. Optionally
     pass in a domain name to only load cookies from the specified domain
@@ -1402,7 +1442,7 @@ def w3m(cookie_file=None, domain_name=""):
     """
     return W3m(cookie_file, domain_name).load()
 
-all_browsers = [chrome, chromium, opera, opera_gx, brave, edge, vivaldi, firefox, librewolf, safari, lynx, w3m, arc]
+all_browsers = [chrome, chromium, opera, opera_gx, brave, edge, vivaldi, comet, firefox, librewolf, safari, lynx, w3m, arc]
 
 def load(domain_name=""):
     """Try to load cookies from all supported browsers and return combined cookiejar

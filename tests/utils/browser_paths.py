@@ -96,6 +96,15 @@ BIN_LOCATIONS = {
         ],
         # Not tested
         'macos': ['/Applications/Vivaldi.app/Contents/MacOS/Vivaldi']
+    },
+    BrowserName.COMET: {
+        'windows': [
+            r'C:\Program Files (x86)\Comet\Application\comet.exe',
+            r'C:\Program Files\Comet\Application\comet.exe',
+            fr'C:\Users\{get_username()}\AppData\Local\Comet\Application\comet.exe'
+        ],
+        # Not tested
+        'macos': ['/Applications/Comet.app/Contents/MacOS/Comet']
     }
 }
 

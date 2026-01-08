@@ -9,11 +9,12 @@ class BrowserName:
     BRAVE = 'brave'
     EDGE = 'edge'
     VIVALDI = 'vivaldi'
+    COMET = 'comet'
     FIREFOX = 'firefox'
     LIBREWOLF = 'librewolf'
 
 
-logger = logging.getLogger('browser_cookie3_test')
+logger = logging.getLogger('browser_cookie_test')
 logger.setLevel(logging.INFO)
 console_handler = logging.StreamHandler()
 formatter = logging.Formatter('%(levelname)s - %(message)s')
