@@ -1,5 +1,5 @@
 [project]
-name = "browser-cookie"
+name = "browser_cookie"
 version = "0.1.0"
 description = "Loads cookies from your browser into a cookiejar object so can download with urllib and other libraries the same content you see in the web browser."
 authors = [
@@ -16,8 +16,8 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/cipher-shad0w/browser-cookies"
-Repository = "https://github.com/cipher-shad0w/browser-cookies"
+Homepage = "https://github.com/cipher-shad0w/browser_cookie"
+Repository = "https://github.com/cipher-shad0w/browser_cookie"
 
 [project.scripts]
 browser-cookie = "src.__main__:main"

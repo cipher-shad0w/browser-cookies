@@ -110,7 +110,7 @@ Creating and testing a fresh cookie file can help eliminate some possible user s
 ### Chrome and chromium
 For linux and assumably mac:
 
-Run `google-chrome-stable --user-data-dir=browser_cookie3 #replace google-chrome-stable with your command to start chrome/chromium` and when you close the browser you will have a new cookie file at `browser_cookie3/Default/Cookies`
+Run `google-chrome-stable --user-data-dir=browser_cookie #replace google-chrome-stable with your command to start chrome/chromium` and when you close the browser you will have a new cookie file at `browser_cookie/Default/Cookies`
 
 If you want to share a cookie file then visit some site that will generate cookie (without logging in!), example https://www.theverge.com/ will save cookies after you accept the GDPR notice.
 
@@ -154,13 +154,13 @@ Safari   |    -     | 31/01/23 |    -     |
 W3m      | 05/07/23 |    -     |    -     |
 Lynx     | 05/07/23 |    -     |    -     |
 
-However I only tested on a single version of each browser and so am not sure if the cookie sqlite format changes location or format in earlier/later versions. If you experience a problem please [open an issue](https://github.com/borisbabic/browser_cookie3/issues/new) which includes details of the browser version and operating system. Also patches to support other browsers are very welcome, particularly for Chrome and Internet Explorer on Windows.
+However I only tested on a single version of each browser and so am not sure if the cookie sqlite format changes location or format in earlier/later versions. If you experience a problem please [open an issue](https://github.com/cipher-shad0w/browser_cookie/issues/new) which includes details of the browser version and operating system. Also patches to support other browsers are very welcome, particularly for Chrome and Internet Explorer on Windows.
 
 ## Acknowledgements ##
 Special thanks to Nathan Henrie for his example of [how to decode the Chrome cookies](http://n8henrie.com/2013/11/use-chromes-cookies-for-easier-downloading-with-python-requests/).
 
-[PyPi-downloads]: https://img.shields.io/pypi/dm/browser-cookie3
-[PyPi-url]: https://pypi.org/project/browser-cookie3/
-[License-shield]: https://img.shields.io/github/license/borisbabic/browser_cookie3?color=00aaaa
+[PyPi-downloads]: https://img.shields.io/pypi/dm/browser-cookie
+[PyPi-url]: https://pypi.org/project/browser-cookie/
+[License-shield]: https://img.shields.io/github/license/borisbabic/browser_cookie?color=00aaaa
 [License-url]: https://github.com/borisbabic/browser_cookie3/blob/master/LICENSE
-[PyPi-version]: https://img.shields.io/pypi/v/browser-cookie3?color=00aa00
+[PyPi-version]: https://img.shields.io/pypi/v/browser-cookie?color=00aa00

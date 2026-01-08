@@ -1,15 +1,14 @@
 from setuptools import setup
 
 setup(
-    name='browser-cookie',
-    version='0.20.1',
+    name='browser_cookie',
+    version='0.1.0',
     packages=['browser_cookie'],
     # look for package contents in current directory
     package_dir={'browser_cookie': 'browser_cookie'},
-    author='Boris Babic',
-    author_email='boris.ivan.babic@gmail.com',
+    author='cipher-shad0w',
     description='Loads cookies from your browser into a cookiejar object so can download with urllib and other libraries the same content you see in the web browser.',     # noqa: E501
-    url='https://github.com/borisbabic/browser-cookie',
+    url='https://github.com/borisbabic/browser_cookie',
     install_requires=[
         'lz4',
         'pycryptodomex',
