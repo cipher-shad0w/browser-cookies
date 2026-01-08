@@ -8,12 +8,12 @@ This is a python3 fork of [Richard Penman's Browser Cookie](https://github.com/r
 
 * ***What does it do?*** Loads cookies used by your web browser into a cookiejar object.
 * ***Why is it useful?*** This means you can use python to download and get the same content you see in the web browser without needing to login.
-* ***Which browsers are supported?*** Chrome, Firefox, LibreWolf, Opera, Opera GX, Edge, Chromium, Brave, Vivaldi, Safari, W3m and Lynx.
+* ***Which browsers are supported?*** Chrome, Firefox, LibreWolf, Opera, Opera GX, Edge, Chromium, Brave, Vivaldi, Comet, Safari, W3m and Lynx.
 * ***How are the cookies stored?*** Most currently-supported browsers store cookies in a sqlite database in your home directory. Some browsers store them in tab-separated txt files.
 
 ## Install
 ```bash
-pip install browser-cookie3
+pip install browser-cookie
 ```
 
 ## Python usage
@@ -37,12 +37,12 @@ And here is the webpage title when downloaded normally:
 'Git and Mercurial code management for teams'
 ```
 
-Now let's try with browser_cookie3 - make sure you are logged into Bitbucket in Firefox before trying this example:
+Now let's try with browser_cookie - make sure you are logged into Bitbucket in Firefox before trying this example:
 ```python
 #!python
 
->>> import browser_cookie3
->>> cj = browser_cookie3.firefox()
+>>> import browser_cookie
+>>> cj = browser_cookie.firefox()
 >>> opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
 >>> login_html = opener.open(url).read()
 >>> get_title(login_html)
@@ -55,9 +55,9 @@ Here is an alternative example with [requests](http://docs.python-requests.org/e
 ```python
 #!python
 
->>> import browser_cookie3
+>>> import browser_cookie
 >>> import requests
->>> cj = browser_cookie3.chrome()
+>>> cj = browser_cookie.chrome()
 >>> r = requests.get(url, cookies=cj)
 >>> get_title(r.content)
 'richardpenman / home &mdash; Bitbucket'
@@ -67,9 +67,9 @@ Alternatively if you don't know/care which browser has the cookies you want then
 ```python
 #!python
 
->>> import browser_cookie3
+>>> import browser_cookie
 >>> import requests
->>> cj = browser_cookie3.load()
+>>> cj = browser_cookie.load()
 >>> r = requests.get(url, cookies=cj)
 >>> get_title(r.content)
 'richardpenman / home &mdash; Bitbucket'
@@ -79,9 +79,9 @@ Alternatively if you are only interested in cookies from a specific domain, you 
 ```python
 #!python
 
->>> import browser_cookie3
+>>> import browser_cookie
 >>> import requests
->>> cj = browser_cookie3.chrome(domain_name='www.bitbucket.com')
+>>> cj = browser_cookie.chrome(domain_name='www.bitbucket.com')
 >>> r = requests.get(url, cookies=cj)
 >>> get_title(r.content)
 'richardpenman / home &mdash; Bitbucket'
@@ -129,6 +129,7 @@ So far the following platforms are supported:
 * **Chromium:** Linux, MacOS, Windows
 * **Brave:** Linux, MacOS, Windows
 * **Vivaldi:** Linux, MacOS, Windows
+* **Comet:** MacOS, Windows
 * **Safari:** MacOS
 * **W3m:** Linux
 * **Lynx:** Linux
@@ -148,6 +149,7 @@ Edge     | 31/01/23 | 31/01/23 | 31/01/23 |
 Chromium | 07/24/21 | 15/06/22 | 15/06/22 |
 Brave    | 31/01/23 | 31/01/23 | 31/01/23 |
 Vivaldi  | 31/01/23 | 31/01/23 | 15/06/22 |
+Comet    |    -     |    -     |    -     |
 Safari   |    -     | 31/01/23 |    -     |
 W3m      | 05/07/23 |    -     |    -     |
 Lynx     | 05/07/23 |    -     |    -     |

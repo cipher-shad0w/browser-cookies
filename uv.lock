@@ -9,7 +9,7 @@ resolution-markers = [
 
 [[package]]
 name = "browser-cookie"
-version = "0.21.0"
+version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "jeepney", marker = "'bsd' in sys_platform or sys_platform == 'linux'" },

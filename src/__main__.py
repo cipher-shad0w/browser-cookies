@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import argparse
-import browser_cookie3
+from . import all_browsers, load, BrowserCookieError
 import json
 
 
 def parse_args(args=None):
     p = argparse.ArgumentParser(
-        description='Extract browser cookies using browser_cookie3.',
+        description='Extract browser cookies using browser-cookie.',
         epilog='Exit status is 0 if cookie was found, 1 if not found, and 2 if errors occurred',
     )
     p.add_argument('-j', '--json', action='store_true',
@@ -19,7 +19,7 @@ def parse_args(args=None):
     x = g.add_mutually_exclusive_group()
     x.add_argument('-a', '--all', dest='browser', action='store_const', const=None, default=None,
                    help="Try to load cookies from all supported browsers")
-    for browser in browser_cookie3.all_browsers:
+    for browser in all_browsers:
         x.add_argument('--' + browser.__name__, dest='browser', action='store_const', const=browser,
                        help="Load cookies from {} browser".format(browser.__name__.title()))
     g.add_argument('-f', '--cookie-file',
@@ -42,8 +42,8 @@ def main(args=None):
         if args.browser:
             cj = args.browser(cookie_file=args.cookie_file, key_file=args.key_file)
         else:
-            cj = browser_cookie3.load()
-    except browser_cookie3.BrowserCookieError as e:
+            cj = load()
+    except BrowserCookieError as e:
         p.error(e.args[0])
 
     for cookie in cj:

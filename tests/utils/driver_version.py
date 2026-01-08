@@ -58,3 +58,26 @@ def get_vivaldi_driver_version(binary_location, is_github_actions) -> str:
     if sys.platform == 'win32' and is_github_actions:
         return get_vivaldi_driver_version_from_web()
     return get_driver_version_from_chromium_based_binary(binary_location)
+
+
+def get_comet_driver_version(binary_location) -> str:
+    logger.info('Getting Comet version from binary')
+    if sys.platform == 'darwin':
+        # Extract version from Info.plist on macOS
+        import subprocess
+        app_path = binary_location.replace('/Contents/MacOS/Comet', '')
+        result = subprocess.run(
+            ['defaults', 'read', f'{app_path}/Contents/Info.plist', 'CFBundleShortVersionString'],
+            capture_output=True, text=True
+        )
+        if result.returncode == 0:
+            version = result.stdout.strip()
+            major_version = version.split('.')[0]
+            return ChromeDriverVersion(f'Chrome/{major_version}.0.0.0').get()
+    # Fallback to trying to get version from binary
+    try:
+        return get_driver_version_from_chromium_based_binary(binary_location)
+    except Exception:
+        # If all else fails, use a reasonable default
+        logger.warning('Could not determine Comet version, using Chrome 143 as default')
+        return ChromeDriverVersion('Chrome/143.0.0.0').get()
