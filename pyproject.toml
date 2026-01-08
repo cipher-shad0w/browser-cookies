@@ -1,0 +1,33 @@
+[project]
+name = "browser-cookie"
+version = "0.1.0"
+description = "Loads cookies from your browser into a cookiejar object so can download with urllib and other libraries the same content you see in the web browser."
+authors = [
+    { name = "cipher-shad0w" }
+]
+license = { text = "LGPL" }
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+    "lz4",
+    "pycryptodomex",
+    "jeepney; sys_platform == 'linux' or 'bsd' in sys_platform",
+    "shadowcopy; sys_platform == 'win32'",
+]
+
+[project.urls]
+Homepage = "https://github.com/cipher-shad0w/browser-cookies"
+Repository = "https://github.com/cipher-shad0w/browser-cookies"
+
+[project.scripts]
+browser-cookie = "src.__main__:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[dependency-groups]
+dev = []
